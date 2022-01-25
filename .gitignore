@@ -1,0 +1,11 @@
+node_modules/
+**/log
+**/logs
+**/bin
+**/obj
+**/data
+**/etc
+**/secrets
+**/.git
+**/.vs
+**/*.txt

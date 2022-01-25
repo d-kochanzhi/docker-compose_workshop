@@ -1,0 +1,91 @@
+# Файл docker-compose должен начинаться с тега версии.
+version: "3.9"  
+
+# Следует учитывать, что docker-composes работает с сервисами.
+# 1 сервис = 1 контейнер.
+# Сервисом может быть клиент, сервер, сервер баз данных...
+# Раздел, в котором будут описаны сервисы, начинается с 'services'.
+
+services:
+  api:
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    container_name: "api"
+    restart: always
+    # Ключевое слово "build" позволяет задать
+    # путь к файлу Dockerfile, который нужно использовать для создания образа,
+    # который позволит запустить сервис.
+    build: ./code-back/api
+    # Внешний порт хоста:внутренний порт в контейнере
+    ports:
+      - "${BACK_PORT}:80"
+
+    #/host-folder-path:/container-folder-path
+    volumes: 
+      - "./code-back/api/logs/:c:/app/logs/"
+    environment:
+      - "Redis=redis:${CACHE_PORT}}"
+      - "ConnectionStrings:DefaultConnection=Data Source=mssql,1433;Initial Catalog=testdb;Integrated Security=false;MultipleActiveResultSets=true;User id=sa;Password=passworD142!;"
+    depends_on:
+      - redis
+      - mssql
+    networks:
+      - backend      
+
+  redis:
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    container_name: "redis"
+    build: ./code-back/cache
+    restart: always
+    volumes:
+      - "./code-back/cache/redis/data:/data"
+    ports:
+      - ${CACHE_PORT}:6379
+    networks:
+      - backend      
+
+  mssql:
+    image: "mcr.microsoft.com/mssql/server"
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+    container_name: mssql
+    hostname: mssql
+    environment:
+            - ACCEPT_EULA=Y
+            - SA_PASSWORD=${DB_SA_PASSWORD}
+            - MSSQL_PID=Developer
+    restart: always   
+    volumes:
+      - ./code-back/db/data:/var/opt/mssql/data
+      - ./code-back/db/log:/var/opt/mssql/log
+      - ./code-back/db/secrets:/var/opt/mssql/secrets
+    ports:  
+      - "${DB_PORT}:1433" 
+    networks:
+      - backend
+  
+  front: 
+    container_name: "front"
+    build: 
+      context: ./code-front/vue
+      args: 
+      - VUE_APP_ROOT_API=http://api:${BACK_PORT}/
+    restart: always
+    ports:  
+      - "${FRONT_PORT}:80" 
+    networks:
+      - backend
+      - frontend
+
+networks:
+  backend:
+    name: backend
+  frontend:
+    name: frontend
