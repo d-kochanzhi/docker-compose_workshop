@@ -24,7 +24,7 @@ services:
 
     #/host-folder-path:/container-folder-path
     volumes: 
-      - "./code-back/api/logs/:c:/app/logs/"
+      - "./code-back/api/logs/:/app/logs/"
     environment:
       - "Redis=redis:${CACHE_PORT}}"
       - "ConnectionStrings:DefaultConnection=Data Source=mssql,1433;Initial Catalog=testdb;Integrated Security=false;MultipleActiveResultSets=true;User id=sa;Password=passworD142!;"
@@ -50,7 +50,9 @@ services:
       - backend      
 
   mssql:
-    image: "mcr.microsoft.com/mssql/server"
+    # путь к файлу Dockerfile, который нужно использовать для создания образа,
+    # который позволит запустить сервис.
+    build: ./code-back/db 
     deploy:
       resources:
         limits:
@@ -80,6 +82,8 @@ services:
     restart: always
     ports:  
       - "${FRONT_PORT}:80" 
+    depends_on:
+      - api
     networks:
       - backend
       - frontend
