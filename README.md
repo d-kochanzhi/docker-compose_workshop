@@ -11,3 +11,8 @@
 docker-compose -f "docker-compose.yml" up -d --build
 
 ```
+
+front http://localhost:8081/
+backend http://localhost:5000/ApiSample
+database localhost,1433
+cache redis:6379

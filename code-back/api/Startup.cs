@@ -45,7 +45,7 @@ namespace dockerapi
 
             Log.Information(config);
 
-
+            services.AddCors();
             services.AddControllers();
 
             services.AddStackExchangeRedisCache(options =>
@@ -73,6 +73,9 @@ namespace dockerapi
 
             app.UseAuthorization();
 
+            app.UseCors(
+                options => options.AllowAnyOrigin().AllowAnyMethod()
+            );
 
             app.UseEndpoints(endpoints =>
             {

@@ -1,10 +1,12 @@
 var path = require("path");
 var webpack = require("webpack");
 
-console.log(process.env);
+//console.log(process.env);
+const env = process.env.NODE_ENV || "development";
 
 module.exports = {
   entry: "./src/main.js",
+  devtool: true,
   output: {
     path: path.resolve(__dirname, "./dist"),
     publicPath: "/dist/",
@@ -39,10 +41,13 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.SourceMapDevToolPlugin({}),
     new webpack.DefinePlugin({
       "process.env": {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV || "Development"),
-        VUE_APP_ROOT_API: JSON.stringify(process.env.VUE_APP_ROOT_API || "/")
+        NODE_ENV: JSON.stringify(env || "development"),
+        VUE_APP_ROOT_API: JSON.stringify(
+          process.env.VUE_APP_ROOT_API || "http://localhost:5000/"
+        )
       }
     })
   ],
@@ -53,6 +58,7 @@ module.exports = {
     extensions: ["*", ".js", ".vue", ".json"]
   },
   devServer: {
+    port: 8082,
     historyApiFallback: true,
     noInfo: true,
     overlay: true
@@ -63,7 +69,8 @@ module.exports = {
   devtool: "#eval-source-map"
 };
 
-if (process.env.NODE_ENV === "production") {
+if (env === "production") {
+  console.info("!production!");
   module.exports.devtool = "#source-map";
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
