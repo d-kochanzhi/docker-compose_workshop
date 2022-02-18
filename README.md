@@ -12,7 +12,10 @@ docker-compose -f "docker-compose.yml" up -d --build
 
 ```
 
-front http://localhost:8081/
-backend http://localhost:5000/ApiSample
-database localhost,1433
-cache redis:6379
+![networks](code-front/vue/src/assets/docker_workshop_network.png)
+![networks](docker_workshop_architecture.png)
+
+- front http://localhost:8081/
+- backend http://localhost:5000/ApiSample
+- database localhost,1433
+- cache redis:6379
