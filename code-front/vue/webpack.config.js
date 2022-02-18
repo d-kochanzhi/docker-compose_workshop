@@ -46,7 +46,7 @@ module.exports = {
       "process.env": {
         NODE_ENV: JSON.stringify(env || "development"),
         VUE_APP_ROOT_API: JSON.stringify(
-          process.env.VUE_APP_ROOT_API || "http://localhost:5000/"
+          process.env.VUE_APP_ROOT_API || "https://localhost:44354/"
         )
       }
     })
