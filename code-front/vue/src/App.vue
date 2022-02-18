@@ -48,11 +48,12 @@ export default {
         });
     },
     startTimer() {
-      if (this.currentTime < 100)
-        this.timer = setInterval(() => {
+      this.timer = setInterval(() => {
+        if (this.currentTime < 100) {
           this.doFetch();
           this.currentTime++;
-        }, 1000);
+        } else this.stopTimer();
+      }, 1000);
     },
     stopTimer() {
       clearTimeout(this.timer);

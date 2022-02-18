@@ -26,8 +26,8 @@ services:
     volumes: 
       - "./code-back/api/logs/:/app/logs/"
     environment:
-      - "Redis=redis:${CACHE_PORT}"
-      - "ConnectionStrings:DefaultConnection=Data Source=mssql,1433;Initial Catalog=testdb;Integrated Security=false;MultipleActiveResultSets=true;User id=sa;Password=passworD142!;"
+      - "Redis=${CACHE_HOST}:${CACHE_PORT}"
+      - "ConnectionStrings:DefaultConnection=Data Source=${DB_HOST},${DB_PORT};Initial Catalog=testdb;Integrated Security=false;MultipleActiveResultSets=true;User id=sa;Password=${DB_SA_PASSWORD};"
     depends_on:
       - redis
       - mssql
