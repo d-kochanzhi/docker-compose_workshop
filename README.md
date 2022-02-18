@@ -13,7 +13,7 @@ docker-compose -f "docker-compose.yml" up -d --build
 ```
 
 ![networks](code-front/vue/src/assets/docker_workshop_network.png)
-![networks](docker_workshop_architecture.png)
+![networks](code-front/vue/src/assets/docker_workshop_architecture.png)
 
 - front http://localhost:8081/
 - backend http://localhost:5000/ApiSample
