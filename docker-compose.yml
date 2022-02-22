@@ -49,9 +49,7 @@ services:
     networks:
       - backend      
 
-  mssql:
-    # путь к файлу Dockerfile, который нужно использовать для создания образа,
-    # который позволит запустить сервис.
+  mssql:  
     build: ./code-back/db 
     deploy:
       resources:
