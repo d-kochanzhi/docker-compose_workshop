@@ -19,9 +19,6 @@ ENV VUE_APP_ROOT_API=$VUE_APP_ROOT_API
 # собираем приложение для production с минификацией
 RUN npm run build
 
-
-
-
 # этап production (production-stage)
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /app/index.html /usr/share/nginx/html
